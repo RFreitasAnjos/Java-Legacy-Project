@@ -1,0 +1,110 @@
+﻿# =============================================================================
+# Java EE / Maven / Docker - .gitignore
+# =============================================================================
+
+# ─── Maven ───────────────────────────────────────────────────────────────────
+target/
+
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ─── Artefatos de Build ──────────────────────────────────────────────────────
+*.war
+*.ear
+*.jar
+!**/src/main/**/**.jar
+
+# ─── Java ────────────────────────────────────────────────────────────────────
+*.class
+*.log
+*.ctxt
+.mtj.tmp/
+hs_err_pid*
+replay_pid*
+
+# ─── JPA / Hibernate ─────────────────────────────────────────────────────────
+hibernate_*.cfg.xml
+
+# ─── IDEs ────────────────────────────────────────────────────────────────────
+
+## IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+## Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+
+## NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+## VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# ─── JaCoCo / Cobertura ──────────────────────────────────────────────────────
+jacoco.exec
+*.exec
+
+# ─── Surefire / Relatórios de Testes ─────────────────────────────────────────
+surefire-reports/
+**/site/
+
+# ─── Docker ──────────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+docker-compose.override.yml
+
+# ─── Credenciais e Configurações Sensíveis ───────────────────────────────────
+*.password
+*.secret
+application-prod.properties
+application-prod.xml
+persistence-prod.xml
+
+# ─── Sistema Operacional ─────────────────────────────────────────────────────
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+## Linux
+*~
+
+# ─── Logs de Servidor ────────────────────────────────────────────────────────
+*.log
+logs/
+server.log*
+wildfly-*.log
+
+# ─── Outros ──────────────────────────────────────────────────────────────────
+*.tmp
+*.bak
+*.swp
+*.orig

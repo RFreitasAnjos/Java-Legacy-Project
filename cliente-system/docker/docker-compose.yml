@@ -1,0 +1,44 @@
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_cliente_system
+    environment:
+      POSTGRES_DB: cliente_system
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  builder:
+    image: maven:3.9.6-eclipse-temurin-8
+    container_name: cliente_system_builder
+    working_dir: /app
+    volumes:
+      - ../:/app
+      - maven_cache:/root/.m2
+    command: mvn clean package
+
+  wildfly:
+    build: ./wildfly
+    container_name: wildfly_cliente_system
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    volumes:
+      - ../target/cliente-system.war:/opt/jboss/wildfly/standalone/deployments/cliente-system.war
+      - wildfly_xml_history:/opt/jboss/wildfly/standalone/configuration/standalone_xml_history
+    depends_on:
+      postgres:
+        condition: service_healthy
+      builder:
+        condition: service_completed_successfully
+
+volumes:
+  maven_cache:
+  wildfly_xml_history:

@@ -1,0 +1,9 @@
+embed-server --server-config=standalone.xml --std-out=echo
+
+module add --name=org.postgresql --resources=/tmp/postgresql-42.6.0.jar --dependencies=javax.api,javax.transaction.api
+
+/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-class-name=org.postgresql.Driver)
+
+/subsystem=datasources/data-source=ClienteDS:add(jndi-name="java:jboss/datasources/ClienteDS",driver-name=postgresql,connection-url="jdbc:postgresql://postgres:5432/cliente_system",user-name=postgres,password=postgres,min-pool-size=5,max-pool-size=20,enabled=true,use-java-context=true)
+
+stop-embedded-server

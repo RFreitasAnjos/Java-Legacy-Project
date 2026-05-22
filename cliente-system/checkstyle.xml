@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+    <property name="fileExtensions" value="java"/>
+    <module name="TreeWalker">
+        <!-- Imports desnecessarios -->
+        <module name="UnusedImports"/>
+        <module name="AvoidStarImport"/>
+        <!-- Consistencia entre equals e hashCode -->
+        <module name="EqualsHashCode"/>
+        <!-- Simplificacao booleana -->
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <!-- Blocos vazios -->
+        <module name="EmptyBlock">
+            <property name="option" value="text"/>
+        </module>
+        <module name="EmptyStatement"/>
+    </module>
+</module>

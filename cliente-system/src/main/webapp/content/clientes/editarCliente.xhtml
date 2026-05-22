@@ -1,0 +1,46 @@
+<ui:composition template="/templates/root/mainLayout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:define name="title">Editar Cliente</ui:define>
+
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="clienteId" value="#{clienteBean.clienteId}"/>
+            <f:viewAction action="#{clienteBean.carregar}" onPostback="false"/>
+        </f:metadata>
+
+        <h2>Editar Cliente</h2>
+
+        <h:form id="formEdicao">
+            <h:inputHidden value="#{clienteBean.cliente.id}"/>
+
+            <h:panelGrid columns="3" style="margin-bottom:20px;">
+                <h:outputLabel value="Nome: *" for="nome"/>
+                <h:inputText id="nome" value="#{clienteBean.cliente.nome}"
+                             required="true" requiredMessage="Nome e obrigatorio"
+                             style="width:250px;padding:6px;"/>
+                <h:message for="nome" style="color:red;"/>
+
+                <h:outputLabel value="Email: *" for="email"/>
+                <h:inputText id="email" value="#{clienteBean.cliente.email}"
+                             required="true" requiredMessage="Email e obrigatorio"
+                             style="width:250px;padding:6px;"/>
+                <h:message for="email" style="color:red;"/>
+
+                <h:outputLabel value="Telefone:" for="telefone"/>
+                <h:inputText id="telefone" value="#{clienteBean.cliente.telefone}"
+                             style="width:250px;padding:6px;"/>
+                <h:outputText value=""/>
+            </h:panelGrid>
+
+            <h:commandButton value="Atualizar" action="#{clienteBean.atualizar}"
+                             style="background:#3498db;color:white;border:none;padding:8px 20px;cursor:pointer;border-radius:4px;"/>
+            <h:link value="Cancelar" outcome="/content/clientes/listarClientes"
+                    style="margin-left:12px;color:#e74c3c;"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
