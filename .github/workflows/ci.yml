@@ -65,7 +65,7 @@ jobs:
   # 2. LINT / ANALISE ESTATICA
   ###########################################################################
   lint:
-    name: "Lint (Checkstyle · PMD · SpotBugs)"
+    name: "Lint (Checkstyle ï¿½ PMD ï¿½ SpotBugs)"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: validate
@@ -264,7 +264,7 @@ jobs:
           chromium-browser --version || true
 
       - name: Download WAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.3
         with:
           name: cliente-system-war
           path: cliente-system/target/
@@ -297,7 +297,7 @@ jobs:
 
       - name: Subir WildFly
         working-directory: cliente-system/docker
-        run: docker compose up -d wildfly
+        run: docker compose up -d --no-deps wildfly
 
       - name: Esperar deploy da aplicacao
         run: |
