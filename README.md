@@ -232,3 +232,121 @@ Ocorre quando dois arquivos .java definem classes com o mesmo nome e anotacao @N
 ### WFLYCTL0056: Could not rename xml_history
 
 WildFly nao consegue arquivar o historico de configuracoes XML quando o diretorio current/ ja tem conteudo de boots anteriores. Resolvido com o volume Docker wildfly_xml_history.
+
+---
+
+## Executando os Testes Localmente
+
+> **Pre-requisito:** todos os comandos abaixo devem ser executados dentro do WSL,
+> pois o Docker e os containers rodam no ambiente Linux do WSL2.
+>
+> Acesse o WSL e navegue ate o modulo:
+> ```bash
+> wsl
+> cd /mnt/c/Users/<seu-usuario>/Documents/Projetos-Pessoais/CURD-JSF/cliente-system
+> ```
+
+---
+
+### Lint (Checkstyle · PMD · SpotBugs)
+
+Cada ferramenta pode ser executada isoladamente ou em sequencia.
+Nenhum container e necessario — a analise ocorre apenas sobre o codigo-fonte.
+
+```bash
+# Checkstyle: convencoes de estilo (regras em checkstyle.xml)
+mvn checkstyle:check
+
+# PMD: analise estatica de codigo (regras em pmd.xml)
+mvn pmd:check
+
+# SpotBugs: deteccao de padroes de bug (threshold: High)
+mvn spotbugs:check
+```
+
+Em caso de violacao, o build falha e o motivo e impresso no console.
+Para apenas gerar o relatorio sem falhar o build, substitua `check` por `checkstyle:checkstyle`, `pmd:pmd` e `spotbugs:spotbugs`.
+
+---
+
+### Testes Unitarios
+
+Executados pelo Maven Surefire. Incluem todos os arquivos `*Test.java`
+e excluem `*IT.java` (reservados para E2E). Nenhum container e necessario.
+
+```bash
+# Roda os testes e gera o relatorio de cobertura JaCoCo
+mvn clean test jacoco:report
+```
+
+| Artefato | Localizacao |
+|---|---|
+| Resultado dos testes | `target/surefire-reports/` |
+| Relatorio de cobertura HTML | `target/site/jacoco/index.html` |
+
+Para abrir o relatorio de cobertura no navegador (Windows, a partir do PowerShell):
+
+```powershell
+Start-Process "target\site\jacoco\index.html"
+```
+
+---
+
+### Testes E2E (Selenium + WildFly + PostgreSQL)
+
+Os testes E2E sobem o ambiente completo via Docker Compose e usam Selenium
+para interagir com a aplicacao no navegador. O perfil Maven `e2e` aciona o
+Failsafe Plugin, que executa apenas os arquivos `*IT.java`.
+
+#### 1. Subir o ambiente
+
+```bash
+cd docker
+docker compose up -d --build
+```
+
+Aguarde a aplicacao estar disponivel antes de rodar os testes:
+
+```bash
+until curl -sf http://localhost:8080/cliente-system/content/clientes/listarClientes.xhtml \
+  -o /dev/null; do
+  echo "Aguardando aplicacao..."; sleep 5
+done
+echo "Aplicacao disponivel."
+```
+
+#### 2. Executar os testes E2E
+
+```bash
+# Volte para a raiz do modulo
+cd ..
+
+APP_BASE_URL=http://localhost:8080/cliente-system \
+  mvn verify -Pe2e -Dsurefire.skip=true
+```
+
+A variavel `APP_BASE_URL` informa ao Selenium qual endpoint apontar.
+
+| Artefato | Localizacao |
+|---|---|
+| Resultado Failsafe | `target/failsafe-reports/` |
+| Screenshots de falha | `target/screenshots/` |
+
+#### 3. Derrubar o ambiente apos os testes
+
+```bash
+cd docker
+docker compose down -v
+```
+
+---
+
+### Resumo dos Comandos
+
+| Etapa | Comando | Container necessario |
+|---|---|---|
+| Checkstyle | `mvn checkstyle:check` | Nao |
+| PMD | `mvn pmd:check` | Nao |
+| SpotBugs | `mvn spotbugs:check` | Nao |
+| Testes unitarios | `mvn clean test jacoco:report` | Nao |
+| E2E | `mvn verify -Pe2e -Dsurefire.skip=true` | Sim (docker compose up) |
