@@ -264,7 +264,7 @@ jobs:
           chromium-browser --version || true
 
       - name: Download WAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.3
         with:
           name: cliente-system-war
           path: cliente-system/target/
