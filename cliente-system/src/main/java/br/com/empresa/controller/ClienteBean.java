@@ -21,6 +21,7 @@ public class ClienteBean implements Serializable {
     private ClienteService service;
 
     private Cliente cliente = new Cliente();
+    private Cliente clienteSelecionado;
     private List<Cliente> clientes;
     private Long clienteId;
 
@@ -85,19 +86,72 @@ public class ClienteBean implements Serializable {
         }
     }
 
+    /**
+     * Armazena o cliente clicado no Bean sem excluir ainda.
+     */
+    public void prepararRemocao(Cliente cliente) {
+        this.clienteSelecionado = cliente;
+    }
+
+    /**
+     * Confirma a remo??o do cliente selecionado.
+     * Chamado diretamente pelo modal.
+     */
+    public void confirmarRemocao() {
+
+        if (clienteSelecionado != null) {
+
+            remover(clienteSelecionado.getId());
+
+            // limpa objeto ap?s exclus?o
+            clienteSelecionado = null;
+        }
+    }
+
     private void carregarClientes() {
         this.clientes = service.buscarTodos();
     }
 
+    /**
+     * Adiciona uma mensagem ao contexto do Faces.
+     * 
+     * @param severity a severidade da mensagem
+     * @param texto    o texto da mensagem
+     */
     private void addMensagem(FacesMessage.Severity severity, String texto) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, texto, null));
     }
 
-    public Cliente getCliente() { return cliente; }
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+    public Cliente getCliente() {
+        return cliente;
+    }
 
-    public List<Cliente> getClientes() { return clientes; }
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
-    public Long getClienteId() { return clienteId; }
-    public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
+    public List<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public Long getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
+    }
+
+    /**
+     * Retorna o cliente selecionado para remo??o.
+     * 
+     * @return o cliente selecionado
+     */
+    public Cliente getClienteSelecionado() {
+        return clienteSelecionado;
+    }
+
+    public void setClienteSelecionado(Cliente clienteSelecionado) {
+        this.clienteSelecionado = clienteSelecionado;
+    }
 }

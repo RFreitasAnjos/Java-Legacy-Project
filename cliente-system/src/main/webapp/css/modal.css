@@ -1,0 +1,29 @@
+.custom-modal-content {
+    padding: 10px;
+}
+
+.custom-modal-message {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.custom-modal-highlight {
+    font-weight: bold;
+    color: #c0392b;
+    font-size: 16px;
+}
+
+.custom-btn-danger {
+    background: #c0392b !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 4px !important;
+}
+
+.custom-btn-secondary {
+    background: #7f8c8d !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 4px !important;
+}
