@@ -1,10 +1,11 @@
 package br.com.empresa.repository;
 
-import br.com.empresa.entity.Cliente;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import br.com.empresa.entity.Cliente;
 
 @Stateless
 public class ClienteRepository {
