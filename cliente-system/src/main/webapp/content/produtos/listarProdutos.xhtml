@@ -1,0 +1,66 @@
+<ui:composition template="/templates/root/mainLayout.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">Produtos - Lista</ui:define>
+
+    <ui:define name="content">
+
+        <h2>Produtos Cadastrados</h2>
+
+        <h:link value="+ Novo Produto" outcome="/content/produtos/criarProduto" style="
+                display:inline-block;
+                margin-bottom:16px;
+                padding:8px 16px;
+                background:#27ae60;
+                color:white;
+                text-decoration:none;
+                border-radius:4px;
+            " />
+
+        <h:form id="formLista">
+
+            <p:dataTable value="#{produtoBean.produtos}" var="p">
+
+                <p:column headerText="Nome">
+                    #{p.nome}
+                </p:column>
+
+                <p:column headerText="Preco">
+                    <h:outputText value="#{p.preco}">
+                        <f:convertNumber type="currency" currencySymbol="R$ " minFractionDigits="2"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Quantidade">
+                    #{p.quantidade}
+                </p:column>
+
+                <p:column headerText="Acoes">
+                    <p:commandButton value="Editar"
+                        action="#{produtoBean.prepararEdicao(p)}"
+                        process="@this"/>
+                    <p:commandButton value="Excluir"
+                        process="@this"
+                        update=":formLista:dialogExcluir"
+                        actionListener="#{produtoBean.prepararRemocao(p)}"
+                        oncomplete="PF('dialogExcluir').show()"
+                        style="margin-left:6px;"/>
+                </p:column>
+
+            </p:dataTable>
+
+            <ui:include src="/components/confirmDialog.xhtml">
+                <ui:param name="dialogId" value="dialogExcluir" />
+                <ui:param name="titulo" value="Confirmacao de Exclusao" />
+                <ui:param name="mensagem" value="Deseja realmente excluir o produto:" />
+                <ui:param name="textoDestaque" value="#{produtoBean.produtoSelecionado.nome}" />
+                <ui:param name="action" value="#{produtoBean.confirmarRemocao}" />
+                <ui:param name="update" value="formLista" />
+            </ui:include>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

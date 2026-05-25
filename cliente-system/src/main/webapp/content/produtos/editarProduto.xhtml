@@ -1,0 +1,54 @@
+<ui:composition template="/templates/root/mainLayout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:define name="title">Produtos - Editar</ui:define>
+
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="produtoId" value="#{produtoBean.produtoId}"/>
+            <f:viewAction action="#{produtoBean.carregar}" onPostback="false"/>
+        </f:metadata>
+
+        <h2>Editar Produto</h2>
+
+        <h:form id="formEdicao">
+            <h:inputHidden value="#{produtoBean.produto.id}"/>
+
+            <h:panelGrid columns="3" style="margin-bottom:20px;">
+
+                <h:outputLabel value="Nome: *" for="nome"/>
+                <h:inputText id="nome" value="#{produtoBean.produto.nome}"
+                             required="true" requiredMessage="Nome e obrigatorio"
+                             style="width:250px;padding:6px;"/>
+                <h:message for="nome" style="color:red;"/>
+
+                <h:outputLabel value="Preco: *" for="preco"/>
+                <h:inputText id="preco" value="#{produtoBean.produto.preco}"
+                             required="true" requiredMessage="Preco e obrigatorio"
+                             style="width:250px;padding:6px;"/>
+                <h:message for="preco" style="color:red;"/>
+
+                <h:outputLabel value="Quantidade: *" for="quantidade"/>
+                <h:inputText id="quantidade" value="#{produtoBean.produto.quantidade}"
+                             required="true" requiredMessage="Quantidade e obrigatoria"
+                             style="width:250px;padding:6px;"/>
+                <h:message for="quantidade" style="color:red;"/>
+
+                <h:outputLabel value="Descricao:" for="descricao"/>
+                <h:inputText id="descricao" value="#{produtoBean.produto.descricao}"
+                             style="width:250px;padding:6px;"/>
+                <h:outputText value=""/>
+
+            </h:panelGrid>
+
+            <h:commandButton value="Atualizar" action="#{produtoBean.atualizar}"
+                             style="background:#3498db;color:white;border:none;padding:8px 20px;cursor:pointer;border-radius:4px;"/>
+            <h:link value="Cancelar" outcome="/content/produtos/listarProdutos"
+                    style="margin-left:12px;color:#e74c3c;"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
