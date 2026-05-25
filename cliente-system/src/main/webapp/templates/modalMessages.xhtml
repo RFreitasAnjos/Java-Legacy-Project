@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+  <title>Modal JSF</title>
+</h:head>
+<h:body>
+  <h:form id="form">
+
+    <p:dataTable value="#{usuarioBean.usuarios}" var="usuario">
+
+        <p:column headerText="Nome">
+            #{cliente.nome}
+        </p:column>
+
+        <p:column headerText="A??es">
+
+            <p:commandButton
+                value="Excluir"
+                icon="pi pi-trash"
+                process="@this"
+                update=":form:confirmDialog"
+                oncomplete="PF('confirmDialog').show()">
+
+                <f:setPropertyActionListener
+                    target="#{clienteBean.clienteSelecionado}"
+                    value="#{usuario}" />
+
+            </p:commandButton>
+
+        </p:column>
+
+    </p:dataTable>
+
+    <!-- Modal -->
+    <p:dialog
+        header="Confirma??o"
+        widgetVar="confirmDialog"
+        modal="true"
+        closable="false"
+        width="350">
+
+        <h:outputText value="Deseja realmente excluir este usu?rio?" />
+
+        <br/><br/>
+
+        <p:commandButton
+            value="Sim"
+            icon="pi pi-check"
+            action="#{usuarioBean.excluir}"
+            update="form"
+            oncomplete="PF('confirmDialog').hide()" />
+
+        <p:commandButton
+            value="Cancelar"
+            type="button"
+            icon="pi pi-times"
+            onclick="PF('confirmDialog').hide()" />
+
+    </p:dialog>
+
+</h:form>
+</h:body>
+</html>
