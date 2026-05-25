@@ -2,6 +2,8 @@ package br.com.empresa.service;
 
 import br.com.empresa.entity.Cliente;
 import br.com.empresa.repository.ClienteRepository;
+import br.com.empresa.utils.Validators;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -23,12 +25,15 @@ public class ClienteServiceTest {
     @Mock
     private ClienteRepository repository;
 
+    @Mock
+    private Validators validator;
+
     @InjectMocks
     private ClienteService service;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -107,5 +112,20 @@ public class ClienteServiceTest {
 
         assertNotNull(resultado);
         assertEquals(0, resultado.size());
+    }
+
+    @Test
+    public void deveValidarClienteAntesDeSalvar() {
+        Cliente cliente = new Cliente();
+        cliente.setNome("Si");
+        cliente.setEmail("joao@empresa.com");
+
+        service.salvar(cliente);
+
+        verify(validator, times(1)).validar(cliente);
+        verify(repository, times(1)).salvar(cliente);
+
+        assertEquals(2, cliente.getNome().length());
+        
     }
 }
