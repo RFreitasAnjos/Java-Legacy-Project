@@ -30,7 +30,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  JAVA_VERSION: '17'
+  JAVA_VERSION: '8'
   JAVA_DISTRIBUTION: 'temurin'
   MAVEN_OPTS: "-Xmx1024m"
   PROJECT_DIR: cliente-system
@@ -297,7 +297,7 @@ jobs:
 
       - name: Subir WildFly
         working-directory: cliente-system/docker
-        run: docker compose up -d --no-deps wildfly
+        run: docker compose up -d wildfly
 
       - name: Esperar deploy da aplicacao
         run: |
@@ -370,7 +370,6 @@ jobs:
     name: "Resumo Pipeline"
     runs-on: ubuntu-latest
     if: always()
-
     needs:
       - validate
       - lint
