@@ -44,15 +44,15 @@ public class ProdutoE2EIT {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS));
         wait.until(ExpectedConditions.titleContains("Produtos"));
         assertTrue(driver.getTitle().contains("Produtos"));
-        assertTrue(driver.getPageSource().contains("Novo Produto"));
+        assertTrue(driver.getPageSource().contains("Produtos Cadastrados"));
     }
 
     @Test
     public void test02_deveAbrirFormularioCadastro() {
         driver.get(BASE_URL + "/content/produtos/criarProduto.xhtml");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS));
-        wait.until(ExpectedConditions.titleContains("Novo Produto"));
-        assertTrue(driver.getTitle().contains("Novo Produto"));
+        wait.until(ExpectedConditions.titleContains("Produtos - Criar"));
+        assertTrue(driver.getTitle().contains("Produtos - Criar"));
         assertTrue(driver.findElements(By.id("formCadastro:nome")).size() > 0);
     }
 
@@ -77,8 +77,8 @@ public class ProdutoE2EIT {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//button[contains(.,'Editar')])[1]")));
         driver.findElement(By.xpath("(//button[contains(.,'Editar')])[1]")).click();
-        wait.until(ExpectedConditions.titleContains("Editar Produto"));
-        assertTrue(driver.getTitle().contains("Editar Produto"));
+        wait.until(ExpectedConditions.titleContains("Produtos - Editar"));
+        assertTrue(driver.getTitle().contains("Produtos - Editar"));
         assertTrue(driver.findElements(By.id("formEdicao:nome")).size() > 0);
     }
 }
