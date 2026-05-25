@@ -8,6 +8,7 @@
     <persistence-unit name="ClientePU" transaction-type="JTA">
         <jta-data-source>java:jboss/datasources/ClienteDS</jta-data-source>
         <class>br.com.empresa.entity.Cliente</class>
+        <class>br.com.empresa.entity.Produto</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
