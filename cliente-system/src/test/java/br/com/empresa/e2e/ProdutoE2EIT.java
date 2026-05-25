@@ -18,7 +18,7 @@ import java.time.Duration;
 import static org.junit.Assert.assertTrue;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ClienteE2EIT {
+public class ProdutoE2EIT {
 
     private static WebDriver driver;
 
@@ -28,7 +28,7 @@ public class ClienteE2EIT {
 
     private static final int WAIT_SECONDS = 15;
 
-    private static final String TEST_EMAIL = "e2e_" + System.currentTimeMillis() + "@empresa.com";
+    private static final String TEST_NOME = "Produto E2E " + System.currentTimeMillis();
 
     @BeforeClass
     public static void setUp() {
@@ -53,51 +53,52 @@ public class ClienteE2EIT {
 
     @Test
     public void test01_deveCarregarPaginaLista() {
-        driver.get(BASE_URL + "/content/clientes/listarClientes.xhtml");
+        driver.get(BASE_URL + "/content/produtos/listarProdutos.xhtml");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS));
-        wait.until(ExpectedConditions.titleContains("Clientes"));
+        wait.until(ExpectedConditions.titleContains("Produtos"));
 
-        assertTrue("Titulo deve conter 'Clientes'", driver.getTitle().contains("Clientes"));
-        assertTrue("Pagina deve conter link 'Novo Cliente'",
-                driver.getPageSource().contains("Novo Cliente"));
+        assertTrue("Titulo deve conter 'Produtos'", driver.getTitle().contains("Produtos"));
+        assertTrue("Pagina deve conter link 'Novo Produto'",
+                driver.getPageSource().contains("Novo Produto"));
     }
 
     @Test
     public void test02_deveAbrirFormularioCadastro() {
-        driver.get(BASE_URL + "/content/clientes/criarCliente.xhtml");
+        driver.get(BASE_URL + "/content/produtos/criarProduto.xhtml");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS));
-        wait.until(ExpectedConditions.titleContains("Novo Cliente"));
+        wait.until(ExpectedConditions.titleContains("Criar"));
 
-        assertTrue("Titulo deve conter 'Novo Cliente'", driver.getTitle().contains("Novo Cliente"));
+        assertTrue("Titulo deve conter 'Criar'", driver.getTitle().contains("Criar"));
         assertTrue("Formulario de cadastro deve estar presente",
                 driver.findElements(By.id("formCadastro:nome")).size() > 0);
     }
 
     @Test
-    public void test03_deveCadastrarNovoClienteComSucesso() {
-        driver.get(BASE_URL + "/content/clientes/criarCliente.xhtml");
+    public void test03_deveCadastrarNovoProdutoComSucesso() {
+        driver.get(BASE_URL + "/content/produtos/criarProduto.xhtml");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("formCadastro:nome")));
 
-        driver.findElement(By.id("formCadastro:nome")).sendKeys("Cliente E2E");
-        driver.findElement(By.id("formCadastro:email")).sendKeys(TEST_EMAIL);
-        driver.findElement(By.id("formCadastro:telefone")).sendKeys("11999990001");
+        driver.findElement(By.id("formCadastro:nome")).sendKeys(TEST_NOME);
+        driver.findElement(By.id("formCadastro:preco")).sendKeys("99.90");
+        driver.findElement(By.id("formCadastro:quantidade")).sendKeys("10");
+        driver.findElement(By.id("formCadastro:descricao")).sendKeys("Produto criado via E2E");
         driver.findElement(By.cssSelector("#formCadastro input[type='submit']")).click();
 
-        wait.until(ExpectedConditions.urlContains("listarClientes"));
+        wait.until(ExpectedConditions.urlContains("listarProdutos"));
 
         assertTrue("Deve redirecionar para lista apos salvar",
-                driver.getCurrentUrl().contains("listarClientes"));
-        assertTrue("Cliente cadastrado deve aparecer na lista",
-                driver.getPageSource().contains("Cliente E2E"));
+                driver.getCurrentUrl().contains("listarProdutos"));
+        assertTrue("Produto cadastrado deve aparecer na lista",
+                driver.getPageSource().contains(TEST_NOME));
     }
 
     @Test
     public void test04_deveAbrirFormularioEdicao() {
-        driver.get(BASE_URL + "/content/clientes/listarClientes.xhtml");
+        driver.get(BASE_URL + "/content/produtos/listarProdutos.xhtml");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS));
         wait.until(ExpectedConditions.presenceOfElementLocated(
@@ -105,10 +106,10 @@ public class ClienteE2EIT {
 
         driver.findElement(By.xpath("(//button[contains(.,'Editar')])[1]")).click();
 
-        wait.until(ExpectedConditions.titleContains("Editar Cliente"));
+        wait.until(ExpectedConditions.titleContains("Editar"));
 
-        assertTrue("Titulo deve conter 'Editar Cliente'",
-                driver.getTitle().contains("Editar Cliente"));
+        assertTrue("Titulo deve conter 'Editar'",
+                driver.getTitle().contains("Editar"));
         assertTrue("Formulario de edicao deve estar presente",
                 driver.findElements(By.id("formEdicao:nome")).size() > 0);
     }
