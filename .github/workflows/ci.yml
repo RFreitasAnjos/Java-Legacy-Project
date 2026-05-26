@@ -297,7 +297,7 @@ jobs:
 
       - name: Subir WildFly
         working-directory: cliente-system/docker
-        run: docker compose up -d wildfly
+        run: docker compose up -d --no-deps wildfly
 
       - name: Esperar deploy da aplicacao
         run: |
