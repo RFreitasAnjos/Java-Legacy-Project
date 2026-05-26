@@ -75,7 +75,16 @@
     <build>
         <finalName>cliente-system</finalName>
         <plugins>
-            <!-- Empacotamento WAR -->
+            <!-- Copia de recursos: fixado em 3.3.1 para evitar COPY_ATTRIBUTES -->
+            <!-- no filesystem do CI (maven-resources-plugin 3.4.0 falha com     -->
+            <!-- FileSystemException: Operation not permitted)                    -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+            </plugin>
+
+                        <!-- Empacotamento WAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
